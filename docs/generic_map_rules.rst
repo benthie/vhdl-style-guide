@@ -244,6 +244,31 @@ Use explicit port mapping.
      DEPTH => 512
    )
 
+generic_map_010
+###############
+
+|phase_1| |error| |structure|
+
+This rule checks multiple generic assignments on the same line.
+
+**Violation**
+
+.. code-block:: vhdl
+
+   generic map (
+     WIDTH => 32, DEPTH => 512
+   )
+
+**Fix**
+
+.. code-block:: vhdl
+
+   generic map (
+     WIDTH => 32,
+     DEPTH => 512
+   )
+
+
 generic_map_100
 ###############
 
