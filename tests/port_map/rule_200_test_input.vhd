@@ -47,5 +47,4 @@ begin
       PORT_3 => w_port_3
     );
 
-
 end architecture ARCH;
