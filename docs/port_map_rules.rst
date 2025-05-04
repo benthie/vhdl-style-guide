@@ -366,22 +366,77 @@ This rule checks for a blank line below the open parenthesis in a port map.
 
 .. code-block:: vhdl
 
-  port map (
+   port map (
 
-    WR_EN => w_wr_en,
-    RD_EN => w_rd_en,
-    OVERFLOW => w_overflow
-  );
+     WR_EN => w_wr_en,
+     RD_EN => w_rd_en,
+     OVERFLOW => w_overflow
+   );
 
 **Fix**
 
 .. code-block:: vhdl
 
-  port map (
-    WR_EN => w_wr_en,
-    RD_EN => w_rd_en,
-    OVERFLOW => w_overflow
-  );
+   port map (
+     WR_EN => w_wr_en,
+     RD_EN => w_rd_en,
+     OVERFLOW => w_overflow
+   );
+
+port_map_202
+############
+
+|phase_3| |error| |blank_line|
+
+This rule checks for a blank line below the close parenthesis in a port map.
+
+|configuring_blank_lines_link|
+
+**Violation**
+
+.. code-block:: vhdl
+
+   port map (
+     WR_EN => w_wr_en,
+     RD_EN => w_rd_en,
+     OVERFLOW => w_overflow
+
+   );
+
+**Fix**
+
+.. code-block:: vhdl
+
+   port map (
+     WR_EN => w_wr_en,
+     RD_EN => w_rd_en,
+     OVERFLOW => w_overflow
+   );
+
+port_map_203
+############
+
+|phase_3| |error| |blank_line|
+
+This rule checks for a blank line above the **port** keyword.
+
+|configuring_blank_lines_link|
+
+**Violation**
+
+.. code-block:: vhdl
+
+   U_FIFO : FIFO
+
+     port map (
+
+**Fix**
+
+.. code-block:: vhdl
+
+   U_FIFO : FIFO
+     port map (
+
 
 port_map_300
 ############
