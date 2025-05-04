@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from vsg import token
-from vsg.rules import blank_line_below_line_ending_with_token as Rule
+from vsg.rules import blank_line_above_line_starting_with_token as Rule
 
 lTokens = []
-lTokens.append(token.port_map_aspect.open_parenthesis)
+lTokens.append(token.port_map_aspect.close_parenthesis)
 
 
-class rule_200(Rule):
+class rule_202(Rule):
     """
-    This rule checks for a blank line below the open parenthesis in a port map.
+    This rule checks for a blank line below the close parenthesis in a port map.
 
     |configuring_blank_lines_link|
 
@@ -18,10 +18,10 @@ class rule_200(Rule):
     .. code-block:: vhdl
 
        port map (
-
          WR_EN => w_wr_en,
          RD_EN => w_rd_en,
          OVERFLOW => w_overflow
+
        );
 
     **Fix**
