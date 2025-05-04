@@ -317,6 +317,87 @@ This rule checks for a single space between the **generic** keyword and the **ma
 
    generic map (
 
+generic_map_200
+###############
+
+|phase_3| |error| |blank_line|
+
+This rule checks for a blank line below the open parenthesis in a generic map.
+
+|configuring_blank_lines_link|
+
+**Violation**
+
+.. code-block:: vhdl
+
+   generic map (
+
+     WIDTH => 32,
+     DEPTH => 512
+   )
+
+**Fix**
+
+.. code-block:: vhdl
+
+   generic map (
+     WIDTH => 32,
+     DEPTH => 512
+   )
+
+generic_map_202
+###############
+
+|phase_3| |error| |blank_line|
+
+This rule checks for a blank line below the close parenthesis in a generic map.
+
+|configuring_blank_lines_link|
+
+**Violation**
+
+.. code-block:: vhdl
+
+   generic map (
+     WIDTH => 32,
+     DEPTH => 512
+
+   )
+
+**Fix**
+
+.. code-block:: vhdl
+
+   generic map (
+     WIDTH => 32,
+     DEPTH => 512
+   )
+
+generic_map_203
+###############
+
+|phase_3| |error| |blank_line|
+
+This rule checks for a blank line above the **generic** keyword.
+
+|configuring_blank_lines_link|
+
+**Violation**
+
+.. code-block:: vhdl
+
+   U_FIFO : FIFO
+
+     generic map (
+
+**Fix**
+
+.. code-block:: vhdl
+
+   U_FIFO : FIFO
+     generic map (
+
+
 generic_map_300
 ###############
 
