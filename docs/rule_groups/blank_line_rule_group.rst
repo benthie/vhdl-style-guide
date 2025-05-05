@@ -41,6 +41,9 @@ Rules Enforcing Blank Line Rule Group
 * `generate_003 <../generate_rules.html#generate-003>`_
 * `generate_004 <../generate_rules.html#generate-004>`_
 * `generic_019 <../generic_rules.html#generic-019>`_
+* `generic_map_200 <../generic_rules.html#generic-200>`_
+* `generic_map_202 <../generic_rules.html#generic-202>`_
+* `generic_map_203 <../generic_rules.html#generic-203>`_
 * `if_006 <../if_rules.html#if-006>`_
 * `if_007 <../if_rules.html#if-007>`_
 * `if_008 <../if_rules.html#if-008>`_
@@ -69,6 +72,8 @@ Rules Enforcing Blank Line Rule Group
 * `port_022 <../port_rules.html#port-022>`_
 * `port_024 <../port_rules.html#port-024>`_
 * `port_map_200 <../port_map_rules.html#port-map-200>`_
+* `port_map_202 <../port_map_rules.html#port-map-202>`_
+* `port_map_203 <../port_map_rules.html#port-map-203>`_
 * `pragma_400 <../pragma_rules.html#pragma-400>`_
 * `pragma_401 <../pragma_rules.html#pragma-401>`_
 * `pragma_402 <../pragma_rules.html#pragma-402>`_
