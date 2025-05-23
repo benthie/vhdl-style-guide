@@ -172,7 +172,7 @@ def are_next_consecutive_tokens(lTokens, iToken, lObjects):
     return True
 
 
-def are_next_consecutive_token_types(lTypes, iToken, lObjects):
+def are_next_consecutive_token_types(lTypes, iToken, lObjects, debug=False):
     iMaxTokenCount = len(lTypes)
     iTokenCount = 0
     iCurrent = iToken

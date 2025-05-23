@@ -1,0 +1,20 @@
+{
+  "rule": {
+    "architecture_026": {
+      "indent_style": "spaces",
+      "indent_size": 2,
+      "phase": 5,
+      "disable": false,
+      "fixable": true,
+      "severity": "Error",
+      "user_error_message": "",
+      "compact_alignment": "yes",
+      "blank_line_ends_group": "no",
+      "comment_line_ends_group": "no",
+      "if_control_statements_ends_group": "no",
+      "case_control_statements_ends_group": "no",
+      "loop_control_statements_ends_group": "no",
+      "include_type_is_keyword": "yes"
+    }
+  }
+}

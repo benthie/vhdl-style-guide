@@ -45,6 +45,8 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
         self.configuration.append("comment_line_ends_group")
         self.separate_generic_port_alignment = "yes"
         self.configuration.append("separate_generic_port_alignment")
+        self.separate_block_alignment = "yes"
+        self.configuration.append("separate_block_alignment")
 
         self.if_control_statements_ends_group = "no"
         self.configuration.append("if_control_statements_ends_group")
@@ -82,6 +84,8 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
         if self.include_type_is_keyword:
             lSearchTokens.append(self.is_keyword)
 
+        tLastAlignToken = None
+
         lToi = self._get_tokens_of_interest(oFile)
         for oToi in lToi:
             lTokens = oToi.get_tokens()
@@ -91,6 +95,8 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
             iToken = -1
             bSkip = False
             oEndSkipToken = None
+            tCurrentAlignToken = None
+            bNewBlock = False
             dAnalysis = {}
             iIndex = 0
 
@@ -106,6 +112,19 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
                 if not bTokenFound and not bSkip:
                     for oSearch in lSearchTokens:
                         if isinstance(oToken, oSearch):
+                            if self.separate_block_alignment:
+                                tCurrentAlignToken = type(oToken)
+                                if tLastAlignToken is None:
+                                    tLastAlignToken = tCurrentAlignToken
+                                elif tCurrentAlignToken != tLastAlignToken:
+                                    tLastAlignToken = tCurrentAlignToken
+                                    bNewBlock = True
+
+                                if bNewBlock:
+                                    alignment_utils.check_for_violations(self, dAnalysis, oFile)
+                                    dAnalysis = {}
+                                    bNewBlock = False
+
                             bTokenFound = True
                             dAnalysis[iLine] = {}
                             dAnalysis[iLine]["token_column"] = iColumn
