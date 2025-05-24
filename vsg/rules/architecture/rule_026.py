@@ -56,3 +56,37 @@ class rule_026(Rule):
         self.configuration.append("include_type_is_keyword")
         self.is_keyword = token.full_type_declaration.is_keyword
         self.configuration.remove("separate_generic_port_alignment")
+        self.exclude_align_items = []
+        self.configuration.append("exclude_align_items")
+
+    def _convert_options_to_align_items(self, lOptions):
+        lResult = []
+
+        if "file" in lOptions:
+            lResult.append(token.file_declaration.colon)
+        if "signal" in lOptions:
+            lResult.append(token.signal_declaration.colon)
+        if "constant" in lOptions:
+            lResult.append(token.constant_declaration.colon)
+        if "variable" in lOptions:
+            lResult.append(token.variable_declaration.colon)
+        if "alias" in lOptions:
+            lResult.append(token.alias_declaration.colon)
+            lResult.append(token.alias_declaration.is_keyword)
+
+        return lResult
+
+    def _append_excluded_align_items(self, lOptions):
+        # if "file" in lOptions:
+        #     self.lUnless.append([token.file_declaration.file_keyword, token.file_declar])
+        # if "signal" in lOptions:
+        #     self.lUnless.append(token.signal_declaration.colon)
+        print(self.lUnless)
+        if "constant" in lOptions:
+            self.lUnless.append([token.constant_declaration.constant_keyword, token.constant_declaration.semicolon])
+        print(self.lUnless)
+        # if "variable" in lOptions:
+        #     self.lUnless.append(token.variable_declaration.colon)
+        # if "alias" in lOptions:
+        #     self.lUnless.append(token.alias_declaration.colon)
+        #     self.lUnless.append(token.alias_declaration.is_keyword)

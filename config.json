@@ -14,7 +14,31 @@
       "if_control_statements_ends_group": "no",
       "case_control_statements_ends_group": "no",
       "loop_control_statements_ends_group": "no",
-      "include_type_is_keyword": "yes"
+      "include_type_is_keyword": "yes",
+      "separate_block_alignment": "yes",
+      "exclude_align_items": [ "constant" ]
+    },
+
+    "constant_005": {
+      "indent_style": "spaces",
+      "indent_size": 2,
+      "phase": 2,
+      "disable": false,
+      "fixable": true,
+      "severity": "Error",
+      "user_error_message": "",
+      "number_of_spaces": "1"
+    },
+    "constant_006": {
+      "indent_style": "spaces",
+      "indent_size": 2,
+      "phase": 2,
+      "disable": false,
+      "fixable": true,
+      "severity": "Error",
+      "user_error_message": "",
+      "number_of_spaces": "1"
     }
+
   }
 }

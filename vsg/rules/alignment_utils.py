@@ -210,15 +210,15 @@ def is_single_line_aggregate(iToken, lTokens):
     return False
 
 
-def check_for_violations(self, dAnalysis, oFile):
-    add_adjustments_to_dAnalysis(dAnalysis, self.compact_alignment)
+def check_for_violations(dAnalysis, oFile, bCompactAlignment, fAddViolation):
+    add_adjustments_to_dAnalysis(dAnalysis, bCompactAlignment)
     for iKey in list(dAnalysis.keys()):
         if dAnalysis[iKey]["adjust"] != 0:
             oLineTokens = oFile.get_tokens_from_line(iKey)
             sSolution = "Move " + dAnalysis[iKey]["token_value"] + " " + str(dAnalysis[iKey]["adjust"]) + " columns"
             oViolation = violation.New(oLineTokens.get_line_number(), oLineTokens, sSolution)
             oViolation.set_action(dAnalysis[iKey])
-            self.add_violation(oViolation)
+            fAddViolation(oViolation)
 
 
 def generate_statement_detected(self, oToken):

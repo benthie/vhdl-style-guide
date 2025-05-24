@@ -45,7 +45,7 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
         self.configuration.append("comment_line_ends_group")
         self.separate_generic_port_alignment = "yes"
         self.configuration.append("separate_generic_port_alignment")
-        self.separate_block_alignment = "yes"
+        self.separate_block_alignment = "no"
         self.configuration.append("separate_block_alignment")
 
         self.if_control_statements_ends_group = "no"
@@ -61,6 +61,7 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
         self.configuration_documentation_link = "configuring_keyword_alignment_rules_link"
 
         self.include_type_is_keyword = "no"
+        self.exclude_align_items = None
 
     def _get_tokens_of_interest(self, oFile):
         return oFile.get_tokens_bounded_by(self.left_token, self.right_token, bIncludeTillBeginningOfLine=self.bIncludeTillBeginningOfLine)
@@ -73,10 +74,19 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
         self.case_control_statements_ends_group = utils.convert_yes_no_option_to_boolean(self.case_control_statements_ends_group)
         self.loop_control_statements_ends_group = utils.convert_yes_no_option_to_boolean(self.loop_control_statements_ends_group)
         self.separate_generic_port_alignment = utils.convert_yes_no_option_to_boolean(self.separate_generic_port_alignment)
+        self.separate_block_alignment = utils.convert_yes_no_option_to_boolean(self.separate_block_alignment)
         self.generate_statement_ends_group = utils.convert_yes_no_option_to_boolean(self.generate_statement_ends_group)
         self.aggregate_parens_ends_group = utils.convert_yes_no_option_to_boolean(self.aggregate_parens_ends_group)
         self.ignore_single_line_aggregates = utils.convert_yes_no_option_to_boolean(self.ignore_single_line_aggregates)
         self.include_type_is_keyword = utils.convert_yes_no_option_to_boolean(self.include_type_is_keyword)
+
+        # print(f"exclude items {self.exclude_align_items}")
+        # if self.exclude_align_items and isinstance(self.exclude_align_items[0], str):
+        #     self.exclude_align_items = self._convert_options_to_align_items(self.exclude_align_items)
+        #     print(f"exclude items {self.exclude_align_items}")
+
+        if self.exclude_align_items:
+            self._append_excluded_align_items(self.exclude_align_items)
 
         lSearchTokens = []
         lSearchTokens.extend(self.lTokens)
@@ -95,8 +105,6 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
             iToken = -1
             bSkip = False
             oEndSkipToken = None
-            tCurrentAlignToken = None
-            bNewBlock = False
             dAnalysis = {}
             iIndex = 0
 
@@ -115,15 +123,18 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
                             if self.separate_block_alignment:
                                 tCurrentAlignToken = type(oToken)
                                 if tLastAlignToken is None:
+                                    print("last was none")
                                     tLastAlignToken = tCurrentAlignToken
                                 elif tCurrentAlignToken != tLastAlignToken:
-                                    tLastAlignToken = tCurrentAlignToken
-                                    bNewBlock = True
-
-                                if bNewBlock:
-                                    alignment_utils.check_for_violations(self, dAnalysis, oFile)
+                                    bCompactAlignment = tLastAlignToken not in self.exclude_align_items
+                                    print(f"new block, {tLastAlignToken=}  {tCurrentAlignToken=}  {bCompactAlignment=}")
+                                    alignment_utils.check_for_violations(dAnalysis, oFile, bCompactAlignment, self.add_violation)
                                     dAnalysis = {}
-                                    bNewBlock = False
+                                    tLastAlignToken = tCurrentAlignToken
+                                # if bNewBlock:
+                                #     alignment_utils.check_for_violations(dAnalysis, oFile, self.compact_alignment, self.add_violation)
+                                #     dAnalysis = {}
+                                #     bNewBlock = False
 
                             bTokenFound = True
                             dAnalysis[iLine] = {}
@@ -140,15 +151,15 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
                     iColumn += alignment_utils.update_column_width(self, oToken)
 
                 if isinstance(oToken, token.generic_clause.semicolon) and self.separate_generic_port_alignment:
-                    alignment_utils.check_for_violations(self, dAnalysis, oFile)
+                    alignment_utils.check_for_violations(dAnalysis, oFile, self.compact_alignment, self.add_violation)
                     dAnalysis = {}
 
                 if isinstance(oToken, token.generic_map_aspect.close_parenthesis) and self.separate_generic_port_alignment:
-                    alignment_utils.check_for_violations(self, dAnalysis, oFile)
+                    alignment_utils.check_for_violations(dAnalysis, oFile, self.compact_alignment, self.add_violation)
                     dAnalysis = {}
 
                 if alignment_utils.generate_statement_detected(self, oToken):
-                    alignment_utils.check_for_violations(self, dAnalysis, oFile)
+                    alignment_utils.check_for_violations(dAnalysis, oFile, self.compact_alignment, self.add_violation)
                     dAnalysis = {}
 
                 if isinstance(oToken, parser.carriage_return):
@@ -162,27 +173,27 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
                             iIndex + 1,
                             lTokens,
                         ) or utils.are_next_consecutive_token_types([parser.comment], iIndex + 1, lTokens):
-                            alignment_utils.check_for_violations(self, dAnalysis, oFile)
+                            alignment_utils.check_for_violations(dAnalysis, oFile, self.compact_alignment, self.add_violation)
                             dAnalysis = {}
 
                     if self.blank_line_ends_group:
                         if utils.are_next_consecutive_token_types([parser.blank_line], iIndex + 1, lTokens):
-                            alignment_utils.check_for_violations(self, dAnalysis, oFile)
+                            alignment_utils.check_for_violations(dAnalysis, oFile, self.compact_alignment, self.add_violation)
                             dAnalysis = {}
 
                     if self.if_control_statements_ends_group:
                         if alignment_utils.check_for_if_keywords(iIndex + 1, lTokens):
-                            alignment_utils.check_for_violations(self, dAnalysis, oFile)
+                            alignment_utils.check_for_violations(dAnalysis, oFile, self.compact_alignment, self.add_violation)
                             dAnalysis = {}
 
                     if alignment_utils.is_case_control_enabled(self.case_control_statements_ends_group):
                         if alignment_utils.is_case_keyword(self.case_control_statements_ends_group, iIndex, lTokens):
-                            alignment_utils.check_for_violations(self, dAnalysis, oFile)
+                            alignment_utils.check_for_violations(dAnalysis, oFile, self.compact_alignment, self.add_violation)
                             dAnalysis = {}
 
                     if self.loop_control_statements_ends_group:
                         if alignment_utils.check_for_loop_keywords(iIndex + 1, lTokens):
-                            alignment_utils.check_for_violations(self, dAnalysis, oFile)
+                            alignment_utils.check_for_violations(dAnalysis, oFile, self.compact_alignment, self.add_violation)
                             dAnalysis = {}
 
                 elif self.ignore_single_line_aggregates and alignment_utils.is_single_line_aggregate(iIndex, lTokens):
@@ -190,12 +201,12 @@ class align_tokens_in_region_between_tokens(alignment.Rule):
                 elif self.aggregate_parens_ends_group:
                     if alignment_utils.check_for_aggregate_parens(iIndex, lTokens):
                         if not self.ignore_single_line_aggregates or not alignment_utils.is_single_line_aggregate(iToken, lTokens):
-                            alignment_utils.check_for_violations(self, dAnalysis, oFile)
+                            alignment_utils.check_for_violations(dAnalysis, oFile, self.compact_alignment, self.add_violation)
                             dAnalysis = {}
 
                 iIndex += 1
 
-            alignment_utils.check_for_violations(self, dAnalysis, oFile)
+            alignment_utils.check_for_violations(dAnalysis, oFile, self.compact_alignment, self.add_violation)
             dAnalysis = {}
 
     def _fix_violation(self, oViolation):

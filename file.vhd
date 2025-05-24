@@ -5,11 +5,11 @@ architecture a of b is
   ------------------------------------------------------------------------------
 
   -- Comment 1
-  constant C_FOO     : natural := 1;
+  constant C_FOO : natural := 1;
   -- Comment 2
-  constant C_BAR     : natural := 2;
+  constant C_BAR : natural := 2;
   -- Comment 3
-  constant C_FOO_BAR : natural := 3;
+  constant C_FOO_BAR : natural:= 3;
 
   ------------------------------------------------------------------------------
   -- Type definitions
@@ -33,6 +33,13 @@ architecture a of b is
   -- foo
   signal b_reg_2       : std_logic_vector(3 downto 0);
   signal rst           : std_logic := '0';
+
+  ------------------------------------------------------------------------------
+  -- Aliases
+  ------------------------------------------------------------------------------
+
+  alias my_alias1 : subtype_identifier is name;
+  alias alias1 is name;
 
 begin
 
