@@ -81,6 +81,12 @@ class Rule(whitespace.Rule):
             self.analyze_lt_spaces(oToi)
         elif self.number_of_spaces_is_plus():
             self.analyze_plus_spaces(oToi)
+        elif self.number_of_spaces_is_an_integer_string():
+            self.number_of_spaces = int(self.number_of_spaces)
+            self.analyze_whitespace_token(oToi)
+        else:
+            # Ignore invalid string value for number_of_spaces
+            pass
 
     def number_of_spaces_is_gt(self):
         if self.number_of_spaces.startswith(">"):
@@ -141,6 +147,13 @@ class Rule(whitespace.Rule):
         if isinstance(self.number_of_spaces, str):
             return False
         return True
+
+    def number_of_spaces_is_an_integer_string(self):
+        try:
+            int(self.number_of_spaces)
+            return True
+        except ValueError:
+            return False
 
     def analyze_integer_spaces(self, oToi):
         iWhitespaces = extract_length_of_whitespace(oToi)
