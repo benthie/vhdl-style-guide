@@ -1,0 +1,22 @@
+{
+  "file_rules": [
+    {
+      "temp/template.vhd": {
+        "rule": {
+          "comment_010": {
+            "disable": true
+          }
+        }
+      }
+    },
+    {
+      "**/*_foo.vhd": {
+        "rule": {
+          "global": {
+            "disable": true
+          }
+        }
+      }
+    }
+  ]
+}
