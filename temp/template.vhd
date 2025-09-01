@@ -1,5 +1,5 @@
 library ieee;
-use ieee.std_logic_1164.all;
+  use ieee.std_logic_1164.all;
 
 entity Template is
   generic (
@@ -15,8 +15,8 @@ architecture Behavioral of Template is
 
 begin
 
--- <PLACEHOLDER BEG>
+  -- <PLACEHOLDER BEG>
 
--- <PLACEHOLDER END>
+  -- <PLACEHOLDER END>
 
 end architecture Behavioral;
